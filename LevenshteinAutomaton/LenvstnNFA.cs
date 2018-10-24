@@ -1,9 +1,10 @@
 ﻿using System;
 using SCG = System.Collections.Generic;
-using C5;
 
 using state = System.Int32;
 using input = System.Char;
+using C5;
+using System.Text;
 
 namespace LevenshteinAutomaton
 {
@@ -180,6 +181,39 @@ namespace LevenshteinAutomaton
                 }
             }
             Console.Write("\n\n");
+        }
+
+        public string ToDotGraph()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("digraph finite_state_machine {");
+            var indent = "\t";
+            builder.AppendLine("rankdir=LR;");
+            //builder.AppendLine("size=");
+
+            for (state from = 0; from < size; ++from)
+            {
+                for (state to = 0; to < size; ++to)
+                {
+                    input @in = transTable[from][to];
+
+                    var input = @in.ToString();
+
+                    if (@in == (char)Constants.Any)
+                        input = "Theta";
+                    else if (@in == (char)Constants.EpsilonAny)
+                        input = "Epsilon";
+
+                    if (@in != (char)Constants.None)
+                    {
+                        builder.AppendLine(indent + $"{from} -> {to} [ label = \"{input}\" ];");
+                    }
+                }
+            }
+
+            builder.AppendLine("}");
+
+            return builder.ToString();
         }
 
         

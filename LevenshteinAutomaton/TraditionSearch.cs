@@ -28,7 +28,7 @@ namespace LevenshteinAutomaton
             List<string> results = new List<string>();
             while (it.MoveNext())
             {
-                if (it.Current.Length > 0 && calDistance(oriword, it.Current) <= dist)
+                if (it.Current.Length > 0 && LavensteinAutomaton.Lavenshtein.GetDistanceTwoRows(oriword, it.Current) <= dist)
                 {
                     results.Add(it.Current);
                 }

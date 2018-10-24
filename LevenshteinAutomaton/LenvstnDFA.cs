@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using state = System.Int32;
 using input = System.Char;
+using System.Text;
+using System.Linq;
 
 namespace LevenshteinAutomaton
 {
@@ -45,6 +47,25 @@ namespace LevenshteinAutomaton
 
             foreach (KeyValuePair<state, state> kvp in defaultTrans)
                 Console.Write("Default trans[{0}] = {1}\n", kvp.Key, kvp.Value);
+        }
+
+        public string ToDotGraph()
+        {
+            var builder = new StringBuilder();
+            builder.AppendLine("digraph finite_state_machine {");
+            builder.AppendLine("rankdir=LR;");
+
+            builder.AppendLine($"node [shape = doublecircle]; {string.Join(" ", final)};");
+            builder.AppendLine("$node [shape = circle];");
+
+            foreach (KeyValuePair<KeyValuePair<state, input>, state> kvp in transTable)
+            {
+                builder.AppendLine($"\t{kvp.Key.Key} -> {kvp.Value} [ label = \"{kvp.Key.Value}\" ];");
+            }
+
+            builder.AppendLine("}");
+
+            return builder.ToString();
         }
     }
 

@@ -13,11 +13,27 @@ namespace LevenshteinAutomaton
     /// </summary>
     public class Program
     {
+
+        public static void Main(string[] args)
+        {
+            Regex rgx = new Regex("[^a-zA-Z]");
+            IEnumerable<string> wordLib = System.IO.File.ReadAllLines(@"Data\WordLib.txt").ToList().Select(word => rgx.Replace(word, "").ToLowerInvariant());
+            const int MaxDist = 1;
+            TrieDictionary dict = TrieDictionary.BuildTrieDictionary(wordLib.GetEnumerator());
+
+            while (true)
+            {
+                Console.Write("Word: ");
+                var word = Console.ReadLine().ToLowerInvariant();
+                var results = AutomatonSearch.search(word, MaxDist, dict);
+            }
+        }
+
         /// <summary>
         /// The main entry point of the Console Application
         /// </summary>
         /// <param name="args"></param>
-        static void Main(string[] args)
+        static void OldMain(string[] args)
         {
             //Load word libary
             Regex rgx = new Regex("[^a-zA-Z]");
@@ -28,7 +44,7 @@ namespace LevenshteinAutomaton
             const int MaxDist = 1;
             
             //Load test cases
-            IEnumerable<string> testcase1 = System.IO.File.ReadAllLines(@"Data\TestCase_2_WordsToSearch.txt").ToList().Select(word => rgx.Replace(word, "").ToLowerInvariant());
+            IEnumerable<string> testcase1 = System.IO.File.ReadAllLines(@"Data\TestCase_1_WordsToSearch.txt").ToList().Select(word => rgx.Replace(word, "").ToLowerInvariant());
 
             Console.WriteLine("----Automaton way----");
             //Build Trie dictionary based on library.

@@ -41,9 +41,19 @@ namespace LevenshteinAutomaton
         public static IEnumerable<string> search(string oriWord, int maxDist, TrieDictionary dict)
         {
             LenvstnNFA nfa = LenvstnNFA.BuildNFA(oriWord, maxDist);
-            //nfa.Show();
+
+            Console.WriteLine("-------------- NFA ----------------------");
+
+            Console.WriteLine(nfa.ToDotGraph());
+
+            Console.WriteLine("-------------------------------------");
+
             LenvstnDFA dfa = SubsetMachine.SubsetConstruct(nfa);
-            //dfa.Show();
+            Console.WriteLine("------------------ DFA -----------------------");
+            Console.WriteLine(dfa.ToDotGraph());
+
+            Console.WriteLine("-------------------------------------");
+
             List<string> output = new List<string>();
             DFSserach(dfa, dfa.start, dict.Root, output);
             return output;
